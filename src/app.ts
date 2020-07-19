@@ -10,7 +10,8 @@ const schema = yup.object().shape({
   handle: yup
     .string()
     .trim()
-    .matches(/^[\w\-]+$/i),
+    .matches(/^[\w\-]+$/i)
+    .nullable(),
   url: yup.string().trim().url().required(),
 });
 
@@ -45,40 +46,41 @@ async function startServer() {
   app.post("/generate", async (req: Request, res: Response, next) => {
     let { handle, url }: { handle: string; url: string } = req.body;
 
-    try {
-      await schema.validate({ handle, url });
-      if (!handle) {
-        handle = nanoid(5);
-      } else {
-        dbConnection.query(
-          `SELECT id FROM url_shortner.urls WHERE(handle="${handle}")`,
-          (err, results, fields) => {
-            if (err) {
-              res.json({ error: err });
-            } else {
-              res.json(results);
-            }
-          }
-        );
-      }
-    } catch (error) {
-      next(error);
-    }
+    // try {
+    //   await schema.validate({ handle, url });
+    //   if (!handle) {
+    //     handle = nanoid(5);
+    //   } else {
+    //     dbConnection.query(
+    //       `SELECT id FROM url_shortner.urls WHERE(handle="${handle}")`,
+    //       (err, results, fields) => {
+    //         if (err) {
+    //           res.json({ error: err });
+    //         } else {
+    //           res.json(results);
+    //         }
+    //       }
+    //     );
+    //   }
+    // } catch (error) {
+    //   next(error);
+    // }
 
     // res.json({ handle });
-    //   dbConnection.query(
-    //     `
-    //     INSERT INTO url_shortner.urls (url, handle) VALUES (${url}, ${handle});;
-    // `,
-    //     (err, results, fields) => {
-    //       if (err) {
-    //         console.log(err);
-    //         res.status(500).json({ error: err });
-    //       } else {
-    //         res.status(201).json({ message: "success" });
-    //       }
-    //     }
-    //   );
+    const h = nanoid(5);
+    dbConnection.query(
+      `
+        INSERT INTO url_shortner.urls (url, handle) VALUES ("${url}", "${h}");
+    `,
+      (err, results, fields) => {
+        if (err) {
+          console.log(err);
+          res.status(500).json({ error: err });
+        } else {
+          res.status(201).json({ handle: h, url: url });
+        }
+      }
+    );
   });
 
   app.use((error, req, res, next) => {
