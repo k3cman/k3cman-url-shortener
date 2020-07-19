@@ -1,9 +1,8 @@
 import express, { Request, Response } from "express";
+import config from "./config";
+import { loaders } from "./loaders";
 
 const app = express();
-
-app.use(express.static("public"));
-app.use(express.json());
 
 // POST request
 // Generate new short url
@@ -24,6 +23,18 @@ app.get("/:handle", (req: Request, res: Response) => {
 // Initialize the server
 
 const port: number | string = process.env.PORT || 1234;
-app.listen(port, () => {
-  console.log(`Server is listening to port ${port}`);
-});
+app.listen(port, () => {});
+
+async function startServer() {
+  const app = express();
+  app.use(express.static("public"));
+  app.use(express.json());
+
+  const port: number | string = process.env.PORT || config.port;
+  await loaders.db();
+  app.listen(port, () => {
+    console.log(`Server is listening to port ${port}`);
+  });
+}
+
+startServer();
