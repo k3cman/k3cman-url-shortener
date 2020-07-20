@@ -3,12 +3,14 @@
 - [x] Create express backend
 - [x] Create Sersimpleve html page
 - - [x] Add bootstrap
-- - [] Use vanilla js
+- - [x] Add input and form
+- - [ ] Add response UI-s
+- - [ ] Use vanilla js / or add react or vue with cdn
+- - [ ] Add proper validation before submiting form
 - [x] Add POST endpoint for creation
 - [x] Add GET endpoint that redirects to the url
 - [x] Connect to database
-- [] Sql?
-- [] switch to mongo
--
-- [] Make proper UI
-- [] Deploy
+- [x] Sql
+- [ ] Add validation and handle errors properly
+- [ ] Make proper UI
+- [ ] Deploy

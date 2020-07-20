@@ -27,7 +27,6 @@ async function startServer() {
   app.use(express.json());
 
   const port: number | string = process.env.PORT || config.port;
-  // await loaders.db();
   const dbConnection = mysql.createConnection({
     host: config.databaseURL,
     user: config.dbConfig.user,
@@ -41,10 +40,36 @@ async function startServer() {
   });
 
   // TODO split this into multiple files
+
   // POST request
   // Generate new short url
   app.post("/generate", async (req: Request, res: Response, next) => {
+
     let { handle, url }: { handle: string; url: string } = req.body;
+    if(!handle || handle === ''){
+      handle = nanoid(5)
+    }
+
+    await schema.validate({handle, url});
+
+    dbConnection.query(`SELECT COUNT(handle) from url_shortner.urls WHERE handle='${handle}';`, (err, results, fields) => {
+      if(err){
+        next(err)
+      }else{
+        if(results[0]['COUNT(handle)'] !== 0){
+          next('Handle already in use')
+        }else{
+          dbConnection.query(`INSERT INTO url_shortner.urls (url, handle) VALUES ("${url}", "${handle}");`, (err, results, fields) => {
+            if (err) {
+              next(err);
+              res.json({ error: err });
+            } else {
+              res.json({ handle: h, url: url });
+            }
+          })
+        }
+      }
+    })
 
     // try {
     //   await schema.validate({ handle, url });
