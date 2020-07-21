@@ -39,6 +39,15 @@ async function startServer() {
     console.log("Connected to db");
   });
 
+  const checkExistence = async (h:string) => {
+    await dbConnection.query(`SELECT COUNT(handle) from url_shortner.urls WHERE handle='${h}';`, (err, results, fields) => {
+      if(err){
+        return true;
+      }
+      return results[0]['COUNT(handle)'] === 0;
+    });
+  }
+
   // TODO split this into multiple files
 
   // POST request
@@ -52,24 +61,19 @@ async function startServer() {
 
     await schema.validate({handle, url});
 
-    dbConnection.query(`SELECT COUNT(handle) from url_shortner.urls WHERE handle='${handle}';`, (err, results, fields) => {
-      if(err){
-        next(err)
-      }else{
-        if(results[0]['COUNT(handle)'] !== 0){
-          next('Handle already in use')
-        }else{
-          dbConnection.query(`INSERT INTO url_shortner.urls (url, handle) VALUES ("${url}", "${handle}");`, (err, results, fields) => {
-            if (err) {
-              next(err);
-              res.json({ error: err });
-            } else {
-              res.json({ handle: h, url: url });
-            }
-          })
+    const itemExists:boolean = await checkExistence(handle);
+    if(!itemExists){
+      dbConnection.query(`INSERT INTO url_shortner.urls (url, handle) VALUES ("${url}", "${handle}");`, (err, results, fields) => {
+        if (err) {
+          next(err);
+          res.json({ error: err });
+        } else {
+          res.json({ handle: h, url: url });
         }
-      }
-    })
+      })
+    }
+
+
 
     // try {
     //   await schema.validate({ handle, url });

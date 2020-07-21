@@ -11,6 +11,9 @@
 - [x] Add GET endpoint that redirects to the url
 - [x] Connect to database
 - [x] Sql
+- [ ] Refactor
+- - [ ] Rewrite all functions
+- - [ ] Add comments
 - [ ] Add validation and handle errors properly
 - [ ] Make proper UI
 - [ ] Deploy
