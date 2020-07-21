@@ -17,9 +17,7 @@ const schema = yup.object().shape({
 
 // GET request
 // Used to redirect to real url
-app.get("/:handle", (req: Request, res: Response) => {
-  res.redirect("http://kecman.dev");
-});
+
 
 async function startServer() {
   const app = express();
@@ -48,6 +46,8 @@ async function startServer() {
     });
   }
 
+
+
   // TODO split this into multiple files
 
   // POST request
@@ -60,56 +60,23 @@ async function startServer() {
     }
 
     await schema.validate({handle, url});
-
-    const itemExists:boolean = await checkExistence(handle);
-    if(!itemExists){
-      dbConnection.query(`INSERT INTO url_shortner.urls (url, handle) VALUES ("${url}", "${handle}");`, (err, results, fields) => {
-        if (err) {
-          next(err);
-          res.json({ error: err });
-        } else {
-          res.json({ handle: h, url: url });
-        }
-      })
-    }
-
-
-
-    // try {
-    //   await schema.validate({ handle, url });
-    //   if (!handle) {
-    //     handle = nanoid(5);
-    //   } else {
-    //     dbConnection.query(
-    //       `SELECT id FROM url_shortner.urls WHERE(handle="${handle}")`,
-    //       (err, results, fields) => {
-    //         if (err) {
-    //           res.json({ error: err });
-    //         } else {
-    //           res.json(results);
-    //         }
-    //       }
-    //     );
-    //   }
-    // } catch (error) {
-    //   next(error);
-    // }
-
-    // res.json({ handle });
-    const h = nanoid(5);
-    dbConnection.query(
-      `
-        INSERT INTO url_shortner.urls (url, handle) VALUES ("${url}", "${h}");
-    `,
-      (err, results, fields) => {
-        if (err) {
-          console.log(err);
-          res.status(500).json({ error: err });
-        } else {
-          res.status(201).json({ handle: h, url: url });
-        }
+    const checkQuery = `SELECT COUNT(handle) from url_shortner.urls WHERE handle='${handle}';`
+    const creationQuery = `INSERT INTO url_shortner.urls (url, handle) VALUES ("${url}", "${handle}");`
+    dbConnection.query(checkQuery, (err, results, fields) => {
+      if(err){
+        next(err)
       }
-    );
+
+      if(results[0]['COUNT(handle)'] === 0){
+        dbConnection.query(creationQuery, (err, results, fields) => {
+          if(err){
+            next(err)
+          }else{
+            res.status(201).json({message: 'success'})
+          }
+        })
+      }
+    })
   });
 
   app.use((error, req, res, next) => {
@@ -126,6 +93,22 @@ async function startServer() {
 
   app.listen(port, () => {
     console.log(`Server is listening to port ${port}`);
+  });
+
+  app.get("/:handle", (req: Request, res: Response, next) => {
+    console.log('get request');
+    const getQuery = `SELECT url FROM url_shortner.urls WHERE handle="${req.params.handle}"`
+    dbConnection.query(getQuery, (err, results, fields) => {
+      console.log('query')
+      if(err){
+        console.log(err);
+        next(err);
+      }else{
+        if(results[0].hasOwnProperty('url')){
+          res.redirect(results[0].url)
+        }
+      }
+    })
   });
 }
 
