@@ -30,11 +30,50 @@
             </div>
           </div>
         </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" id="submit" class="btn btn-primary">Submit</button>
         </form>
+        <div id="message"></div>
       </div>
 
 
     </div>
   </body>
+<script>
+  let submitBtn = document.getElementById('submit');
+  let urlInput = document.getElementById('basic-url');
+  let handleInput = document.getElementById('handle');
+  let messageContainer = document.getElementById('message')
+
+  submitBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    const url = urlInput.value;
+    const handle = handleInput.value;
+
+    fetch('/generate', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({
+        handle: handle && handle !== '' ? handle : '',
+        url: url
+      })
+    }).then(res => {
+      if(res.status === 201){
+        messageContainer.innerHTML = `
+          <h3> Success </h3>
+        `
+      }else{
+        messageContainer.innerHTML = `
+          <h3> Error </h3>
+        `
+      }
+    })
+  })
+</script>
 </html>

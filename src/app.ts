@@ -96,15 +96,12 @@ async function startServer() {
   });
 
   app.get("/:handle", (req: Request, res: Response, next) => {
-    console.log('get request');
     const getQuery = `SELECT url FROM url_shortner.urls WHERE handle="${req.params.handle}"`
     dbConnection.query(getQuery, (err, results, fields) => {
-      console.log('query')
       if(err){
-        console.log(err);
         next(err);
       }else{
-        if(results[0].hasOwnProperty('url')){
+        if(results && results.length > 0 && results[0].hasOwnProperty('url')){
           res.redirect(results[0].url)
         }
       }
