@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import * as yup from "yup";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 export const Generate = () => {
   const [url, setUrl] = useState(123);
   const [handle, setHandle] = useState("");
-
+  const history = useHistory();
   const schema = yup.object().shape({
     url: yup.string().trim().url().required(),
     handle: yup
@@ -30,10 +32,21 @@ export const Generate = () => {
     });
     schema.validate({ url, handle }).then(
       () => {
-        console.log("success");
+        axios
+          .post("http://localhost:8000/generate", {
+            handle,
+            url,
+          })
+          .then((res) => {
+            if (res.status === 201) {
+              history.push("/success");
+            } else {
+              history.push("/error");
+            }
+          });
       },
       (err) => {
-        console.log(err);
+        history.push("/error");
       }
     );
   };

@@ -21,6 +21,24 @@ const schema = yup.object().shape({
 async function startServer() {
   const app = express();
   app.use(express.static("client/build"));
+  app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+
+    // Request methods you wish to allow
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+    );
+
+    // Request headers you wish to allow
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "X-Requested-With,content-type"
+    );
+
+    // Pass to next layer of middleware
+    next();
+  });
   app.use(express.json());
 
   const port: number | string = process.env.PORT || config.port;
