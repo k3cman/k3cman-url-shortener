@@ -18,10 +18,9 @@ const schema = yup.object().shape({
 // GET request
 // Used to redirect to real url
 
-
 async function startServer() {
   const app = express();
-  app.use(express.static("public"));
+  app.use(express.static("client/build"));
   app.use(express.json());
 
   const port: number | string = process.env.PORT || config.port;
@@ -37,46 +36,46 @@ async function startServer() {
     console.log("Connected to db");
   });
 
-  const checkExistence = async (h:string) => {
-    await dbConnection.query(`SELECT COUNT(handle) from url_shortner.urls WHERE handle='${h}';`, (err, results, fields) => {
-      if(err){
-        return true;
+  const checkExistence = async (h: string) => {
+    await dbConnection.query(
+      `SELECT COUNT(handle) from url_shortner.urls WHERE handle='${h}';`,
+      (err, results, fields) => {
+        if (err) {
+          return true;
+        }
+        return results[0]["COUNT(handle)"] === 0;
       }
-      return results[0]['COUNT(handle)'] === 0;
-    });
-  }
-
-
+    );
+  };
 
   // TODO split this into multiple files
 
   // POST request
   // Generate new short url
   app.post("/generate", async (req: Request, res: Response, next) => {
-
     let { handle, url }: { handle: string; url: string } = req.body;
-    if(!handle || handle === ''){
-      handle = nanoid(5)
+    if (!handle || handle === "") {
+      handle = nanoid(5);
     }
 
-    await schema.validate({handle, url});
-    const checkQuery = `SELECT COUNT(handle) from url_shortner.urls WHERE handle='${handle}';`
-    const creationQuery = `INSERT INTO url_shortner.urls (url, handle) VALUES ("${url}", "${handle}");`
+    await schema.validate({ handle, url });
+    const checkQuery = `SELECT COUNT(handle) from url_shortner.urls WHERE handle='${handle}';`;
+    const creationQuery = `INSERT INTO url_shortner.urls (url, handle) VALUES ("${url}", "${handle}");`;
     dbConnection.query(checkQuery, (err, results, fields) => {
-      if(err){
-        next(err)
+      if (err) {
+        next(err);
       }
 
-      if(results[0]['COUNT(handle)'] === 0){
+      if (results[0]["COUNT(handle)"] === 0) {
         dbConnection.query(creationQuery, (err, results, fields) => {
-          if(err){
-            next(err)
-          }else{
-            res.status(201).json({message: 'success'})
+          if (err) {
+            next(err);
+          } else {
+            res.status(201).json({ message: "success" });
           }
-        })
+        });
       }
-    })
+    });
   });
 
   app.use((error, req, res, next) => {
@@ -96,16 +95,16 @@ async function startServer() {
   });
 
   app.get("/:handle", (req: Request, res: Response, next) => {
-    const getQuery = `SELECT url FROM url_shortner.urls WHERE handle="${req.params.handle}"`
+    const getQuery = `SELECT url FROM url_shortner.urls WHERE handle="${req.params.handle}"`;
     dbConnection.query(getQuery, (err, results, fields) => {
-      if(err){
+      if (err) {
         next(err);
-      }else{
-        if(results && results.length > 0 && results[0].hasOwnProperty('url')){
-          res.redirect(results[0].url)
+      } else {
+        if (results && results.length > 0 && results[0].hasOwnProperty("url")) {
+          res.redirect(results[0].url);
         }
       }
-    })
+    });
   });
 }
 

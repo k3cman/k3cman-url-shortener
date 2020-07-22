@@ -6,6 +6,8 @@
 - - [x] Add input and form
 - - [x] Add response UI-s
 - - [x] Use vanilla js / or add react or vue with cdn
+- - [ ] Switch to UI library
+- - [ ] Send request to backend
 - - [ ] Add proper validation before submiting form
 - [x] Add POST endpoint for creation
 - [x] Add GET endpoint that redirects to the url
