@@ -1,5 +1,5 @@
-import { urlGetAllAction } from "./controller/UrlGetAllAction";
 import { redirectByHandleAction } from "./controller/RedirectByHandleAction";
+import { urlGetAllAction } from "./controller/UrlGetAllAction";
 
 export const AppRoutes = [
   {

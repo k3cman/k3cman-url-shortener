@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppRoutes = void 0;
-const UrlGetAllAction_1 = require("./controller/UrlGetAllAction");
 const RedirectByHandleAction_1 = require("./controller/RedirectByHandleAction");
+const UrlGetAllAction_1 = require("./controller/UrlGetAllAction");
 exports.AppRoutes = [
     {
         path: "/all",
@@ -15,4 +15,4 @@ exports.AppRoutes = [
         action: RedirectByHandleAction_1.redirectByHandleAction,
     },
 ];
-//# sourceMappingURL=routes.js.map
+//# sourceMappingURL=Routes.js.map

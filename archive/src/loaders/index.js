@@ -9,25 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const typeorm_1 = require("typeorm");
-const express = require("express");
-const bodyParser = require("body-parser");
-const routes_1 = require("./routes");
-typeorm_1.createConnection()
-    .then((connection) => __awaiter(void 0, void 0, void 0, function* () {
-    const app = express();
-    app.use(bodyParser.json());
-    // Init routes
-    routes_1.AppRoutes.forEach((route) => {
-        app[route.method](route.path, (req, res, next) => {
-            route
-                .action(req, res)
-                .then(() => next)
-                .catch((err) => next(err));
-        });
-    });
-    app.listen(3002);
-    console.log("Server on 3002");
-}))
-    .catch((err) => console.log("ORM", err));
+exports.loaders = void 0;
+exports.loaders = {
+    db: () => __awaiter(void 0, void 0, void 0, function* () { }),
+};
 //# sourceMappingURL=index.js.map
