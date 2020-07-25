@@ -4,7 +4,7 @@
   "description": "- [x] Create express backend\r - [x] Create Sersimpleve html page\r - - [x] Add bootstrap\r - - [x] Add input and form\r - - [x] Add response UI-s\r - - [x] Use vanilla js / or add react or vue with cdn\r - - [x] Switch to UI library\r - - [x] Send request to backend\r - - [x] Add proper validation before submiting form\r - [x] Add POST endpoint for creation\r - [x] Add GET endpoint that redirects to the url\r - [x] Connect to database\r - [x] Sql\r - [ ] Refactor\r - - [x] Rewrite all functions\r - - [ ] Add comments\r - [ ] Add validation and handle errors properly\r - [ ] Make proper UI with VUE or React\r - [ ] Deploy",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "tsc && node src/index.js"
   },
   "repository": {
     "type": "git",

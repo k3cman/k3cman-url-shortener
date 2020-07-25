@@ -1,6 +1,5 @@
-import { getManager, Equal } from "typeorm";
+import { Equal, getManager } from "typeorm";
 import { Url } from "../entity/Url";
-import { response } from "express";
 
 export async function redirectByHandleAction(req, res) {
   console.log(req.params.handle);

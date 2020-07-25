@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Url = void 0;
 const typeorm_1 = require("typeorm");
+const class_validator_1 = require("class-validator");
 let Url = class Url {
 };
 __decorate([
@@ -19,6 +20,7 @@ __decorate([
 ], Url.prototype, "id", void 0);
 __decorate([
     typeorm_1.Column(),
+    class_validator_1.IsUrl(),
     __metadata("design:type", String)
 ], Url.prototype, "url", void 0);
 __decorate([
