@@ -15,6 +15,10 @@
 - [x] Sql
 - [ ] Refactor
 - - [x] Rewrite all functions
+- - [x] Switch to TypeOrm system
+- - [ ] Setup system properly
+- - [ ] Connect react and backend to work together when built
+- - [ ] Prepare for deploy / add security
 - - [ ] Add comments
 - [ ] Add validation and handle errors properly
 - [ ] Make proper UI with VUE or React
