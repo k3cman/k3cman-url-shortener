@@ -1,29 +1,33 @@
 {
   "name": "k3cman-url-shortner",
   "version": "1.0.0",
-  "description": "My small url shortner",
-  "main": "app.js",
+  "description": "- [x] Create express backend\r - [x] Create Sersimpleve html page\r - - [x] Add bootstrap\r - - [x] Add input and form\r - - [x] Add response UI-s\r - - [x] Use vanilla js / or add react or vue with cdn\r - - [x] Switch to UI library\r - - [x] Send request to backend\r - - [x] Add proper validation before submiting form\r - [x] Add POST endpoint for creation\r - [x] Add GET endpoint that redirects to the url\r - [x] Connect to database\r - [x] Sql\r - [ ] Refactor\r - - [x] Rewrite all functions\r - - [ ] Add comments\r - [ ] Add validation and handle errors properly\r - [ ] Make proper UI with VUE or React\r - [ ] Deploy",
+  "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon ./src/app.ts",
-    "start": "node ./build/app.js",
-    "build": "tsc"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Nemanja Kecman",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/k3cman/k3cman-url-shortener.git"
+  },
+  "keywords": [],
+  "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/k3cman/k3cman-url-shortener/issues"
+  },
+  "homepage": "https://github.com/k3cman/k3cman-url-shortener#readme",
   "dependencies": {
-    "dotenv": "^8.2.0",
+    "body-parser": "^1.19.0",
+    "class-validator": "^0.12.2",
     "express": "^4.17.1",
     "mysql": "^2.18.1",
-    "nanoid": "^3.1.10",
-    "yup": "^0.29.1"
+    "typeorm": "^0.2.25"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.19.0",
     "@types/express": "^4.17.7",
-    "@types/mysql": "^2.15.15",
-    "@types/nanoid": "^2.1.0",
-    "@types/yup": "^0.29.3",
-    "nodemon": "^2.0.4",
-    "ts-node": "^8.10.2",
+    "@types/node": "^14.0.26",
     "typescript": "^3.9.7"
   }
 }
