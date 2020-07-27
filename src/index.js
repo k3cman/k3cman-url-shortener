@@ -16,6 +16,7 @@ const Routes_1 = require("./Routes");
 typeorm_1.createConnection().then((connection) => __awaiter(void 0, void 0, void 0, function* () {
     const app = express();
     app.use(bodyParser.json());
+    app.use(express.static("client/build"));
     Routes_1.AppRoutes.forEach((route) => {
         app[route.method](route.path, (req, res, next) => {
             route

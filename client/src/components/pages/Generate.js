@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import * as yup from "yup";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { HeaderImage } from "../shared/HeaderImage";
 
 export const Generate = () => {
   const [url, setUrl] = useState(123);
@@ -53,6 +54,7 @@ export const Generate = () => {
 
   return (
     <div>
+      <HeaderImage></HeaderImage>
       <form>
         <label htmlFor="basic-url">Your URL *</label>
         <input

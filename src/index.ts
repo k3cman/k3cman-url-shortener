@@ -6,7 +6,7 @@ import { AppRoutes } from "./Routes";
 createConnection().then(async (connection) => {
   const app = express();
   app.use(bodyParser.json());
-
+  app.use(express.static("client/build"));
   AppRoutes.forEach((route) => {
     app[route.method](route.path, (req, res, next) => {
       route
