@@ -20,7 +20,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "class-validator": "^0.12.2",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "mysql": "^2.18.1",
     "typeorm": "^0.2.25"
   },
